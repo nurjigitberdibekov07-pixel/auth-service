@@ -2,6 +2,8 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import { env } from "./config/env.js";
+import authRoutes from "./routes/auth.routes.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -13,5 +15,9 @@ app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
+app.use("/auth", authRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;
