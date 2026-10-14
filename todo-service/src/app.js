@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import { env } from "./config/env.js";
-import meRoutes from "./routes/auth.routes.js";
+import Task from "./routes/todo.routes.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -15,7 +15,7 @@ app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
-app.use("/auth", meRoutes);
+app.use("/todos", Task);
 
 app.use(notFound);
 app.use(errorHandler);
