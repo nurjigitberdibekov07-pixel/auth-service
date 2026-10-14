@@ -37,7 +37,8 @@ export async function updateTask(taskId, taskData, userId) {
         `UPDATE todos
          SET title = COALESCE($1, title),
              description = COALESCE($2, description),
-             done = COALESCE($3, done)
+             done = COALESCE($3, done),
+             updated_at = NOW()
          WHERE id = $4 AND user_id = $5
          RETURNING *`,
         [taskData.title, taskData.description, taskData.done, taskId, userId]
@@ -56,5 +57,5 @@ export async function deleteTask(taskId, userId) {
     if (!rows.length) {
         throw new HttpError(404, "Задача не найдена");
     }
-    return rows[0];
+    return {"message": "Задача успешно удалена"};
 }
