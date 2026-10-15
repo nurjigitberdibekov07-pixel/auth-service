@@ -11,6 +11,6 @@ export function errorHandler(err, req, res, next) {
     if (err.type === "entity.parse.failed") {
         return res.status(400).json({ message: "Некорректный JSON" });
     }
-    console.error(err);
+    req.log.error({ err }, "unhandled error");
     res.status(500).json({ message: "Внутренняя ошибка сервера" });
 }

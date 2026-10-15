@@ -11,5 +11,5 @@ try {
 }
 
 app.listen(env.PORT, () => {
-    console.log(`Auth service running on port ${env.PORT}`);
+    console.log(`Todo service running on port ${env.PORT}`);
 });
