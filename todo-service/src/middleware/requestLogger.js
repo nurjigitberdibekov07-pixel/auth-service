@@ -1,6 +1,8 @@
+import pinoHttp from "pino-http";
+import { logger } from "../utils/logger.js";
+
 export const requestLogger = pinoHttp({
     logger,
-    // В запись попадает только самое нужное, а не все заголовки
     serializers: {
         req: (req) => ({ id: req.id, method: req.method, url: req.url }),
         res: (res) => ({ statusCode: res.statusCode }),

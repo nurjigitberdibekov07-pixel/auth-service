@@ -11,6 +11,7 @@ const envSchema = z.object({
     JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
     BCRYPT_SALT_ROUNDS: z.coerce.number().int().min(4).default(10),
     CORS_ORIGIN: z.string().default("*"),
+    SEED_DEMO_PASSWORD: z.string().min(8).default("Password123"),
     LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
 });
 
