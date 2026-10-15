@@ -7,7 +7,7 @@ export async function createTask(req, res) {
 }
 
 export async function getTaskList(req, res) {
-    const tasks = await todoService.getTaskList();
+    const tasks = await todoService.getTaskList(req.user.id);   
     req.log.info({ userId: req.user.id }, "task list retrieved");
     res.status(200).json(tasks);
 }

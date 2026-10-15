@@ -34,3 +34,27 @@
 
 - Секреты: случайные, от 32 символов (`openssl rand -hex 32`).
 - Если сменить `JWT_ACCESS_SECRET`, все выданные access-токены станут недействительными.
+
+## Docker Compose (корневой .env)
+
+Шаблон: `.env.example` в корне репозитория. Compose берёт значения отсюда и
+передаёт сервисам под нужными именами.
+
+| Переменная | Обязательна | По умолчанию | Описание |
+| --- | --- | --- | --- |
+| `POSTGRES_USER` | да | нет | Пользователь PostgreSQL |
+| `POSTGRES_PASSWORD` | да | нет | Пароль PostgreSQL (без спецсимволов `@ : / ? # %`, он вставляется в `DATABASE_URL`) |
+| `POSTGRES_PORT` | нет | `5433` | Порт PostgreSQL на вашей машине (внутри Docker всегда 5432) |
+| `AUTH_DB_NAME` | да | нет | Имя базы auth-service |
+| `TODO_DB_NAME` | да | нет | Имя базы todo-service |
+| `AUTH_PORT` | нет | `8080` | Порт auth-service на вашей машине |
+| `TODO_PORT` | нет | `8081` | Порт todo-service на вашей машине |
+| `JWT_ACCESS_SECRET` | да | нет | Секрет access-токена, **одинаковый** у обоих сервисов |
+| `JWT_REFRESH_SECRET` | да | нет | Секрет refresh-токена (нужен только auth-service) |
+| `SEED_ON_START` | нет | `true` | `true`: при старте загружать демо-данные (повторно безопасно) |
+
+Остальные переменные (`JWT_*_EXPIRES_IN`, `BCRYPT_SALT_ROUNDS`, `CORS_ORIGIN`,
+`LOG_LEVEL`, `SEED_DEMO_PASSWORD`) передаются сервисам как есть, описание в таблицах выше.
+
+Внутри Docker сервисы обращаются к базе по имени контейнера `postgres:5432`,
+а не `localhost`.

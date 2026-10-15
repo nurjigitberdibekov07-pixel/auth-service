@@ -11,6 +11,8 @@
 - `bcryptjs` — хеширование паролей
 - `zod` — валидация входных данных и переменных окружения
 - `helmet`, `cors` — базовая защита
+- `swagger-ui-express` — документация API на `/docs`
+- `pino`, `pino-http` — логирование
 
 ## Установка и запуск
 
@@ -43,6 +45,8 @@
    | `JWT_REFRESH_EXPIRES_IN` | Время жизни refresh-токена                       | `7d`                                                |
    | `BCRYPT_SALT_ROUNDS`     | Сложность хеширования пароля                     | `10`                                                |
    | `CORS_ORIGIN`            | Разрешённый источник запросов                    | `http://localhost:3000`                             |
+   | `LOG_LEVEL`          | Подробность логов (`info`, `debug`, `error`...) | `info`        |
+   | `SEED_DEMO_PASSWORD` | Пароль демо-пользователей для `db:seed`         | `Password123` |
 
    Сгенерировать секрет:
 
@@ -53,7 +57,8 @@
 4. Создать таблицы:
 
    ```bash
-   npm run db:init
+   npm run db:init    # Создание таблиц
+   npm run db:seed    # Загрузка тестовых данных
    ```
 
 5. Запустить:
@@ -64,6 +69,21 @@
    ```
 
 Проверка: `GET http://localhost:8080/health` вернёт `{"status":"ok"}`.
+
+## Swagger
+
+Интерактивная документация: `http://localhost:8080/docs`. Войдите через
+`POST /auth/login`, нажмите **Authorize** и вставьте `accessToken`.
+
+## Демо-данные
+
+`npm run db:seed` создаёт пользователей `alice@example.com` и `bob@example.com`
+(пароль `Password123`). Повторный запуск безопасен.
+
+## Логирование
+
+Каждый запрос пишется в лог (метод, путь, статус, время). Токены из логов
+скрываются. Подробность задаётся переменной `LOG_LEVEL`.
 
 ## API
 
@@ -151,13 +171,16 @@ src/
 ├── db/
 │   ├── pool.js            # пул соединений PostgreSQL
 │   ├── schema.sql         # описание таблиц
+│   ├── seed.js            # демо-данные (npm run db:seed) 
 │   └── migrate.js         # создание таблиц (npm run db:init)
+│
+├── docs/openapi.js        # описание API для Swagger
 ├── routes/                # URL → контроллер
 ├── controllers/           # принимают запрос, возвращают ответ
 ├── services/              # бизнес-логика
-├── middleware/            # authenticate, validate, errorHandler
+├── middleware/            # authenticate, validate, errorHandler, requestLogger
 ├── validators/            # zod-схемы
-└── utils/                 # jwt.js, httpError.js
+└── utils/                 # jwt.js, httpError.js, logger.js
 ```
 
 ## База данных

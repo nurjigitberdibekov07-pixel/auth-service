@@ -5,7 +5,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import { env } from "./config/env.js";
-import Task from "./routes/todo.routes.js";
+import todoRoutes from "./routes/todo.routes.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -22,7 +22,11 @@ app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec, { swaggerOptions: { persistAuthorization: true } }));
 app.get("/docs.json", (req, res) => res.json(openapiSpec));
 
-app.use("/todos", Task);
+app.get("/health", (req, res) => {
+      res.json({ status: "ok" });
+});
+
+app.use("/todos", todoRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

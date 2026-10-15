@@ -11,13 +11,11 @@ export async function createTask(taskData, userId) {
     return rows[0];
 }
 
-export async function getTaskList() {
+export async function getTaskList(userId) {
     const { rows } = await pool.query(
-        `SELECT * FROM todos`
+        `SELECT * FROM todos WHERE user_id = $1 ORDER BY created_at DESC`,
+        [userId]
     );
-    if (!rows.length) {
-        throw new HttpError(401, "Список задач пуст.");
-    }
     return rows;
 }
 

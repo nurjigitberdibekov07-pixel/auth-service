@@ -8,7 +8,6 @@ const router = Router();
 
 router.post("/", authenticate, validate(createTaskSchema), createTask);
 router.get("/", authenticate, getTaskList);
-// валидатор работает криво, поэтому пока закомментировал
 router.get("/:id", authenticate, validate(taskIdSchema, "params"), getTaskById);
 router.patch("/:id", authenticate, validate(taskIdSchema, "params"), validate(updateTaskSchema), updateTask);
 router.delete("/:id", authenticate, validate(taskIdSchema, "params"), deleteTask);
